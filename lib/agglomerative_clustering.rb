@@ -1,5 +1,5 @@
 require "agglomerative_clustering/version"
+require "agglomerative_clustering/point"
 
 module AgglomerativeClustering
-  # Your code goes here...
 end

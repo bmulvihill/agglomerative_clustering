@@ -1,6 +1,8 @@
 # AgglomerativeClustering
 
-TODO: Write a gem description
+Hierarchical Agglomerative Clustering Algorithm
+
+Input Set of 3 dimensional points, group into nearest k clusters
 
 ## Installation
 
