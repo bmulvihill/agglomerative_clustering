@@ -1,4 +1,3 @@
-source 'https://rubygems.org'
-
-# Specify your gem's dependencies in agglomerative_clustering.gemspec
+source "https://rubygems.org"
 gemspec
+gem 'factory_girl'

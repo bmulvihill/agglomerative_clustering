@@ -1,10 +1,18 @@
-module AgglomertaiveClustering
+module AgglomerativeClustering
   class Set
     attr_reader :points
 
-    def initialze
+    def initialize
       @points = []
     end
-    
+
+    def push point
+      @points << point
+    end
+
+    def find_outliers
+
+    end
+
   end
 end

@@ -1,4 +1,4 @@
-module AgglomertaiveClustering
+module AgglomerativeClustering
   class Cluster
 
   end
