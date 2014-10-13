@@ -9,7 +9,8 @@ for i in 0..499
   p = Point.new(x,y,z)
   set.push(p)
 end
-
-set.points.each do |point|
-  puts point
+open('points.csv', 'w') do |f|
+  set.points.each do |point|
+    f << "#{point.x},#{point.y},#{point.z}\n"
+  end
 end
