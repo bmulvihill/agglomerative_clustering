@@ -11,24 +11,31 @@ module AgglomerativeClustering
       @points << point
     end
 
-    def print_matrix
+    def print_distance_matrix
       puts distance_matrix.to_a.map(&:inspect)
+    end
+
+    def cluster total_clusters, fraction, distance
+    end
+
+    def get_outliers fraction, distance
+      distance_matrix.each_with_index do |index, row, column|
+        count_hash[row] ||= 0
+        count_hash[row] += 1 if distance_matrix[row, column] > distance
+        outliers << points[row] if count_hash[row]/(distance_matrix.row_count - 1) > fraction
+      end
+      outliers.uniq
+    end
+
+    private
+
+    def set_prime
+      points - outliers
     end
 
     def outliers
       @outliers ||= []
     end
-    
-    def find_outliers fraction, distance
-      distance_matrix.each_with_index do |index, row, column|
-        count_hash[row] ||= 0
-        count_hash[row] += 1 if distance_matrix[row, column] > distance
-        outliers << points[row] if !outliers.include?(points[row]) && count_hash[row]/(distance_matrix.row_count - 1) > fraction
-      end
-      outliers
-    end
-
-    private
 
     def count_hash
       @count_hash ||= {}
