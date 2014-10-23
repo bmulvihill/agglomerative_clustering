@@ -16,17 +16,19 @@ module AgglomerativeClustering
     end
 
     def cluster total_clusters
-      create_clusters.each do |cluster|
-        puts cluster.inspect
+      min_dist = 1000
+      current_clusters = 0
+      create_clusters
+      while current_clusters < total_clusters
+        distance_matrix.each_with_index do |index, row, column|
+          distance = AgglomerativeClustering::Cluster.calculate_min_distance(clusters[row], clusters[column])
+        end
+        current_clusters += 1
       end
     end
 
     def outliers
-      set_outliers
-    end
-
-    def set_prime
-      points - outliers
+      set_outliers.uniq
     end
 
     def find_outliers percentage_of_points, distance
@@ -41,11 +43,14 @@ module AgglomerativeClustering
     private
 
     def create_clusters
-      @clusters ||= []
-      set_prime.each do |set|
-        @clusters << AgglomerativeClustering::Cluster.new(set)
+      points.each do |point|
+        clusters << AgglomerativeClustering::Cluster.new(point)
       end
-      @clusters
+      clusters
+    end
+
+    def clusters
+      @clusters ||= []
     end
 
     def set_outliers

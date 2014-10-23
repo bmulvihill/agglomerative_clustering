@@ -14,7 +14,6 @@ describe AgglomerativeClustering::Set do
       @set.push(point2)
       @set.push(point3)
       @set.push(point4)
-      @set.print_distance_matrix
       expect(@set.cluster(2).size).to eql(2)
     end
   end
@@ -36,11 +35,11 @@ describe AgglomerativeClustering::Set do
 
       percentage_of_points = 90
       distance = 10
-      expect(@set.find_outliers(percentage_of_points, distance)).to eql([outlier1,outlier2])
+      expect(@set.find_outliers(percentage_of_points, distance)).to eql([outlier1, outlier2])
     end
   end
 
-  context '#set_prime' do
+  context '#outliers' do
     it 'will return the set of points without outliers' do
       outlier1 = FactoryGirl.build(:point, x:100, y:200, z:300)
       outlier2 = FactoryGirl.build(:point, x:-100, y:-200, z:-300)
@@ -57,7 +56,7 @@ describe AgglomerativeClustering::Set do
       percentage_of_points = 90
       distance = 10
       @set.find_outliers(percentage_of_points, distance)
-      expect(@set.set_prime).to eql([point1,point2,point3,point4])
+      expect(@set.outliers).to eql([outlier1,outlier2])
     end
   end
 end
