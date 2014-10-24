@@ -1,10 +1,11 @@
 describe AgglomerativeClustering::Cluster do
 
-  context '#calculate_min_distance' do
-    it 'will return the minimum distance between two clusters' do
+  context '#merge' do
+    it 'will merge two clusters' do
       cluster1 = FactoryGirl.build(:cluster)
       cluster2 = FactoryGirl.build(:cluster)
-      expect(AgglomerativeClustering::Cluster.calculate_min_distance(cluster1, cluster2)).to eql(AgglomerativeClustering::EuclideanDistance.distance(cluster1.points[0], cluster2.points[0]))
+      points = cluster1.points + cluster2.points
+      expect(cluster1.merge(cluster2).points).to eql(points)
     end
   end
 end
