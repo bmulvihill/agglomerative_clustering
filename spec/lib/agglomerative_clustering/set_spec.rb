@@ -42,7 +42,7 @@ describe AgglomerativeClustering::Set do
       @set.push(point2)
       @set.push(point3)
       @set.push(point4)
-      expect(@set.calculate_distance(1,2)).to eql(AgglomerativeClustering::EuclideanDistance.distance(point1,point2))
+      expect(@set.calculate_distance(1,2)).to eql(@set.distance(point1,point2))
     end
   end
 

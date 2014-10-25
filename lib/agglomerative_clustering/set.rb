@@ -1,6 +1,7 @@
 require 'matrix'
 module AgglomerativeClustering
   class Set
+    include EuclideanDistance
     attr_reader :points
 
     def initialize
@@ -51,7 +52,7 @@ module AgglomerativeClustering
       minimum = 1.0/0
       clusters[row].points.each do |point1|
         clusters[column].points.each do |point2|
-          distance = EuclideanDistance.distance(point1, point2)
+          distance = distance(point1, point2)
           minimum = distance if distance < minimum
         end unless clusters[column].nil? #cluster has been merged
       end unless clusters[row].nil? #cluster has been merged
@@ -92,7 +93,7 @@ module AgglomerativeClustering
 
     def build_distance_matrix
       Matrix.build(points.size, points.size) do |row, column|
-        EuclideanDistance.distance(points[row], points[column]).round(2)
+        distance(points[row], points[column]).round(2)
       end
     end
 
