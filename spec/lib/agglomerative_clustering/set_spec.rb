@@ -8,13 +8,13 @@ describe AgglomerativeClustering::Set do
     it 'will return clusters of points based on requested number of clusters' do
       point1 = FactoryGirl.build(:point, x:2, y:2, z:3)
       point2 = FactoryGirl.build(:point, x:1, y:4, z:1)
-      point3 = FactoryGirl.build(:point, x:3, y:2, z:2)
+      point3 = FactoryGirl.build(:point, x:5, y:2, z:2)
       point4 = FactoryGirl.build(:point, x:5, y:2, z:3)
       @set.push(point1)
       @set.push(point2)
       @set.push(point3)
       @set.push(point4)
-      expect(@set.cluster(2).size).to eql(2)
+      expect(@set.cluster(3).size).to eql(3)
     end
   end
 
@@ -42,7 +42,6 @@ describe AgglomerativeClustering::Set do
       @set.push(point2)
       @set.push(point3)
       @set.push(point4)
-      @set.print_distance_matrix
       expect(@set.calculate_distance(1,2)).to eql(AgglomerativeClustering::EuclideanDistance.distance(point1,point2))
     end
   end
