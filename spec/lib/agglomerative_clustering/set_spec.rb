@@ -28,14 +28,6 @@ describe AgglomerativeClustering::Set do
     end
   end
 
-  context '#calculate_min_distance' do
-    it 'will return the minimum distance between two clusters' do
-      cluster1 = AgglomerativeClustering::Cluster.new(@point1)
-      cluster2 = AgglomerativeClustering::Cluster.new(@point2)
-      expect(@set.calculate_distance(cluster1, cluster2)).to eql(@set.euclidean_distance(@point1, @point2))
-    end
-  end
-
   context '#find_outliers' do
     it 'will return a list of outliers' do
       outlier1 = FactoryGirl.build(:point, x:100, y:200, z:300)

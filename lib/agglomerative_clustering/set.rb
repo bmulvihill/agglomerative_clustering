@@ -4,8 +4,8 @@ module AgglomerativeClustering
     include EuclideanDistance
     attr_reader :points
 
-    def initialize
-      # use dependency injection for linkage algorithms
+    def initialize(linkage)
+      @linkage = linkage
       @points = []
     end
 
@@ -22,19 +22,10 @@ module AgglomerativeClustering
     end
 
     def cluster total_clusters
-      minimum_clusters =[]
+      clusters_to_merge =[]
       while clusters.size > total_clusters
-        min_dist = 1.0/0
-        clusters.each_with_index do |cluster1, index|
-          clusters[index + 1..clusters.size].each do |cluster2|
-            distance = calculate_distance(cluster1, cluster2)
-            if distance < min_dist && distance != 0
-              min_dist = distance
-              minimum_clusters = [cluster1, cluster2]
-            end
-          end
-        end
-        merge_clusters(minimum_clusters)
+        clusters_to_merge = @linkage.cluster(clusters)
+        merge_clusters(clusters_to_merge)
       end
       clusters
     end
@@ -44,19 +35,6 @@ module AgglomerativeClustering
       min_clusters[0].merge(min_clusters[1])
       clusters.reject! { |cluster| cluster == min_clusters[1] }
       min_clusters[0]
-    end
-
-    # make this part of linkage algorithm (calculate_distance interface)
-    # returns minimum distance between two clusters
-    def calculate_distance(cluster1, cluster2)
-      minimum = 1.0/0
-      cluster1.points.each do |point1|
-        cluster2.points.each do |point2|
-          distance = euclidean_distance(point1, point2)
-          minimum = distance if distance < minimum
-        end
-      end
-      minimum
     end
 
     def outliers
