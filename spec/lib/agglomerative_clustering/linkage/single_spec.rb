@@ -1,7 +1,7 @@
 describe AgglomerativeClustering::Linkage::Single do
 
   context '#cluster' do
-    it 'will return the clusters which are closest to each other' do
+    it 'will return the clusters where min distance is closest' do
       single_linkage = AgglomerativeClustering::Linkage::Single.new
       set = FactoryGirl.build(:set)
       set.push(FactoryGirl.build(:point))
