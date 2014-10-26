@@ -29,7 +29,7 @@ module AgglomerativeClustering
     def cluster total_clusters
       clusters_to_merge =[]
       while clusters.size > total_clusters
-        clusters_to_merge = @linkage.cluster(clusters, distance_matrix)
+        clusters_to_merge = @linkage.cluster(clusters)
         merge_clusters(clusters_to_merge)
       end
       clusters

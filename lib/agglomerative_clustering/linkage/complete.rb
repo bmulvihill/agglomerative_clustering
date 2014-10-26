@@ -1,10 +1,9 @@
 module AgglomerativeClustering
   module Linkage
     class Complete
-      attr_reader :distance_matrix
+      include EuclideanDistance
 
-      def cluster(clusters, distance_matrix)
-        @distance_matrix ||= distance_matrix
+      def cluster(clusters)
         min_cluster_dist = 1.0/0
         clusters.each_with_index do |cluster1, index|
           clusters[index + 1..clusters.size].each do |cluster2|
@@ -22,7 +21,7 @@ module AgglomerativeClustering
         max_point_distance = 0
         cluster1.points.each do |point1|
           cluster2.points.each do |point2|
-            distance = @distance_matrix[point1.index, point2.index]
+            distance = euclidean_distance(point1, point2)
             max_point_distance = distance if distance > max_point_distance
           end
         end
