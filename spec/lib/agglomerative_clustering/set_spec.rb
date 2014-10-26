@@ -19,8 +19,25 @@ describe AgglomerativeClustering::Set do
 
     it 'will cluster points that are closest to each other' do
       @point5 = FactoryGirl.build(:point, x:5, y:2, z:4)
+      @point6 = FactoryGirl.build(:point, x:5, y:3, z:4)
+      @point7 = FactoryGirl.build(:point, x:15, y:20, z:21)
+      @point8 = FactoryGirl.build(:point, x:18, y:21, z:21)
+      @point9 = FactoryGirl.build(:point, x:16, y:22, z:21)
       @set.push(@point5)
-      expect(@set.cluster(2)[1].points).to eql([@point3, @point4, @point5])
+      @set.push(@point6)
+      @set.push(@point7)
+      @set.push(@point8)
+      @set.push(@point9)
+      clusters = @set.cluster(3)
+      clusters[0].points.each do |point|
+        expect([@point1, @point2].include?(point)).to be true
+      end
+      clusters[1].points.each do |point|
+        expect([@point3, @point4, @point5, @point6].include?(point)).to be true
+      end
+      clusters[2].points.each do |point|
+        expect([@point7, @point8, @point9].include?(point)).to be true
+      end
     end
   end
 
