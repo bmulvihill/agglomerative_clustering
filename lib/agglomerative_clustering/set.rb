@@ -10,11 +10,16 @@ module AgglomerativeClustering
     end
 
     def push point
+      point.index = points.size
       points << point
     end
 
     def clusters
       @clusters ||= points.map{ |point| AgglomerativeClustering::Cluster.new(point) }
+    end
+
+    def distance_matrix
+      @distance_matrix ||= build_distance_matrix
     end
 
     def print_distance_matrix
@@ -24,7 +29,7 @@ module AgglomerativeClustering
     def cluster total_clusters
       clusters_to_merge =[]
       while clusters.size > total_clusters
-        clusters_to_merge = @linkage.cluster(clusters)
+        clusters_to_merge = @linkage.cluster(clusters, distance_matrix)
         merge_clusters(clusters_to_merge)
       end
       clusters
@@ -58,10 +63,6 @@ module AgglomerativeClustering
 
     def count_hash
       @count_hash ||= {}
-    end
-
-    def distance_matrix
-      @distance_matrix ||= build_distance_matrix
     end
 
     def build_distance_matrix

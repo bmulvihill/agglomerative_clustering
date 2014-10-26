@@ -1,1 +1,3 @@
-Point = Struct.new(:x, :y, :z)
+Point = Struct.new(:x, :y, :z) do
+  attr_accessor :index
+end
