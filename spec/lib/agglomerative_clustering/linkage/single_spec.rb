@@ -1,15 +1,5 @@
 describe AgglomerativeClustering::Linkage::Single do
 
-  context '#cluster' do
-    it 'will return the clusters where min distance is closest' do
-      single_linkage = AgglomerativeClustering::Linkage::Single.new
-      set = FactoryGirl.build(:set)
-      set.push(FactoryGirl.build(:point))
-      set.push(FactoryGirl.build(:point))
-      expect(single_linkage.cluster(set.clusters)).to eql([set.clusters[0], set.clusters[1]])
-    end
-  end
-
   context '#calculate_distance' do
     it 'will calculate distance between clusters based on the min distnace between points' do
       single_linkage = AgglomerativeClustering::Linkage::Single.new
@@ -25,4 +15,5 @@ describe AgglomerativeClustering::Linkage::Single do
       expect(single_linkage.calculate_distance(cluster1, cluster3)).to eql(min_distance)
     end
   end
+  
 end

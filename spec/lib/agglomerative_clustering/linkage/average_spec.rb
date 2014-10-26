@@ -21,4 +21,5 @@ describe AgglomerativeClustering::Linkage::Average do
       expect(average_linkage.calculate_distance(cluster1, cluster3)).to eql(average_distance)
     end
   end
+  
 end

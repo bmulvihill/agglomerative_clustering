@@ -2,7 +2,7 @@ module AgglomerativeClustering
   module Linkage
     class Base
       include EuclideanDistance
-      
+
       def cluster(clusters)
         min_cluster_dist = 1.0/0
         clusters.each_with_index do |cluster1, index|
@@ -16,6 +16,7 @@ module AgglomerativeClustering
         end
         clusters_to_merge
       end
+      
     end
   end
 end
