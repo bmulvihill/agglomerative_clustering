@@ -18,7 +18,9 @@ describe AgglomerativeClustering::Set do
     end
 
     it 'will cluster points that are closest to each other' do
-      expect(@set.cluster(2)[1].points).to eql([@point3, @point4])
+      @point5 = FactoryGirl.build(:point, x:5, y:2, z:4)
+      @set.push(@point5)
+      expect(@set.cluster(2)[1].points).to eql([@point3, @point4, @point5])
     end
   end
 

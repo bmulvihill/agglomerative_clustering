@@ -30,7 +30,6 @@ module AgglomerativeClustering
       clusters
     end
 
-    # merge clusters and remove cluster from cluster array
     def merge_clusters(min_clusters)
       min_clusters[0].merge(min_clusters[1])
       clusters.reject! { |cluster| cluster == min_clusters[1] }
