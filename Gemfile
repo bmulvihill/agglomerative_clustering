@@ -1,3 +1,5 @@
 source "https://rubygems.org"
 gemspec
-gem 'factory_girl'
+group :development do
+  gem 'factory_girl'
+end

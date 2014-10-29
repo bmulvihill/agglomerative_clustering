@@ -3,20 +3,18 @@ module AgglomerativeClustering
     class Base
       include EuclideanDistance
 
-      def cluster(clusters)
+      def cluster clusters, distance_matrix
         min_cluster_dist = 1.0/0
-        clusters.each_with_index do |cluster1, index|
-          clusters[index + 1..clusters.size].each do |cluster2|
-            distance = calculate_distance(cluster1, cluster2)
-            if distance < min_cluster_dist
-              min_cluster_dist = distance
-              @clusters_to_merge = [cluster1, cluster2]
-            end
+        distance_matrix.matrix.each_with_index do |index, row, column|
+          distance = distance_matrix.matrix[row, column]
+          if distance < min_cluster_dist && distance != 0
+            min_cluster_dist = distance
+            @clusters_to_merge = [row, column]
           end
         end
         clusters_to_merge
       end
-      
+
     end
   end
 end
