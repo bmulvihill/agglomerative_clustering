@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Bryan Mulvihill"]
   spec.email         = ["bmulvihill@pinsonault.com"]
   spec.summary       = %q{Ruby Agglomerative Clustering Algorithm}
-  spec.homepage      = ""
+  spec.homepage      = "https://github.com/bmulvihill/agglomerative_clustering"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
