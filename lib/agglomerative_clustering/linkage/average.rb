@@ -12,9 +12,6 @@ module AgglomerativeClustering
         distances.inject(:+)/distances.size
       end
 
-      def clusters_to_merge
-        @clusters_to_merge ||= []
-      end
     end
   end
 end

@@ -10,11 +10,7 @@ module AgglomerativeClustering
       def center_point cluster
         cluster.points.first.zip(*cluster.points[1..cluster.points.size-1]).map { |a,b| (a + b)/cluster.points.size.to_f }
       end
-
-      def clusters_to_merge
-        @clusters_to_merge ||= []
-      end
-
+      
     end
   end
 end

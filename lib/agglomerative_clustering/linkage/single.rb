@@ -13,9 +13,6 @@ module AgglomerativeClustering
         min_point_distance
       end
 
-      def clusters_to_merge
-        @clusters_to_merge ||= []
-      end
     end
   end
 end
