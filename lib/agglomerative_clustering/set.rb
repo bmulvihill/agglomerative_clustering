@@ -2,11 +2,14 @@ require 'matrix'
 module AgglomerativeClustering
   class Set
     include EuclideanDistance
-    attr_reader :points, :linkage
+    attr_reader :linkage
 
     def initialize(linkage)
       @linkage = linkage
-      @points = []
+    end
+
+    def points
+      @points ||= []
     end
 
     def push point
@@ -23,24 +26,20 @@ module AgglomerativeClustering
 
     def cluster total_clusters
       while clusters.size > total_clusters
-        clusters_to_merge = @linkage.cluster(clusters, distance_matrix)
-        merge_clusters(clusters_to_merge)
+        merge_clusters(shortest_distance)
       end
       clusters
     end
 
-    def merge_clusters cluster_index
-      new_cluster = clusters[cluster_index[0]].merge(clusters[cluster_index[1]])
-      clusters.delete_at(cluster_index[0])
-      distance_matrix.remove_edge(cluster_index[0])
-      clusters.delete_at(cluster_index[1] - 1)
-      distance_matrix.remove_edge(cluster_index[1] - 1)
-      clusters << new_cluster
-      update_distance_matrix(clusters.size - 1, clusters, distance_matrix)
-      new_cluster
+    def merge_clusters indexes
+      index1, index2 = indexes
+      new_cluster = clusters[index1].merge(clusters[index2])
+      remove_cluster(index1)
+      remove_cluster(index2 - 1)
+      add_cluster(new_cluster)
     end
 
-    def update_distance_matrix new_cluster, clusters, distance_matrix
+    def update_distance_matrix new_cluster
       distances = []
       clusters.each do |cluster|
         distances << linkage.calculate_distance(clusters[new_cluster], cluster)
@@ -64,6 +63,30 @@ module AgglomerativeClustering
     end
 
     private
+
+    def add_cluster new_cluster
+      clusters << new_cluster
+      update_distance_matrix(clusters.size - 1)
+      new_cluster
+    end
+
+    def remove_cluster index
+      clusters.delete_at(index)
+      distance_matrix.remove_edge(index)
+    end
+
+    def shortest_distance
+      min_cluster_dist = 1.0/0
+      indexes = []
+      distance_matrix.matrix.each_with_index do |index, row, column|
+        distance = distance_matrix.matrix[row, column]
+        if distance < min_cluster_dist && distance != 0
+          min_cluster_dist = distance
+          indexes = [row, column]
+        end
+      end
+      indexes
+    end
 
     def set_outliers
       @set_outliers ||= []
