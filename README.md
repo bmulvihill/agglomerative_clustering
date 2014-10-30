@@ -2,7 +2,12 @@
 
 Hierarchical Agglomerative Clustering Algorithm
 
-Input Set of 3 dimensional points, group into nearest k clusters
+Input Set of 3 dimensional points, group into nearest k clusters based on Euclidean Distance.
+Currently the Clustering Algorithm supports 4 different types of Linkage
+* Single Linkage (Distance between clusters is based on nearest points)
+* Complete Linkage (Distance between clusters is based on farthest points)
+* Average Linkage (Distance between clusters is based on average distance of points)
+* Center Linkage (Distance between clusters is based on center of cluster)
 
 ## Installation
 
@@ -21,8 +26,8 @@ Or install it yourself as:
     $ gem install agglomerative_clustering
 
 ## Usage
+Please see cluster.rb for a sample until I have a chance to write something up here
 
-TODO: Write usage instructions here
 
 ## Contributing
 
