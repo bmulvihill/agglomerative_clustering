@@ -2,15 +2,17 @@ require 'matrix'
 module AgglomerativeClustering
   class Set
     include EuclideanDistance
-    attr_reader :points
+    attr_reader :linkage
 
     def initialize(linkage)
       @linkage = linkage
-      @points = []
+    end
+
+    def points
+      @points ||= []
     end
 
     def push point
-      point.index = points.size
       points << point
     end
 
@@ -22,23 +24,28 @@ module AgglomerativeClustering
       @distance_matrix ||= build_distance_matrix
     end
 
-    def print_distance_matrix
-      puts distance_matrix.to_a.map(&:inspect)
-    end
-
     def cluster total_clusters
-      clusters_to_merge =[]
       while clusters.size > total_clusters
-        clusters_to_merge = @linkage.cluster(clusters)
-        merge_clusters(clusters_to_merge)
+        merge_clusters(shortest_distance)
       end
       clusters
     end
 
-    def merge_clusters(min_clusters)
-      min_clusters[0].merge(min_clusters[1])
-      clusters.reject! { |cluster| cluster == min_clusters[1] }
-      min_clusters[0]
+    def merge_clusters indexes
+      index1, index2 = indexes
+      new_cluster = clusters[index1].merge(clusters[index2])
+      remove_cluster(index1)
+      remove_cluster(index2 - 1)
+      add_cluster(new_cluster)
+    end
+
+    def update_distance_matrix new_cluster
+      distances = []
+      clusters.each do |cluster|
+        distances << linkage.calculate_distance(clusters[new_cluster], cluster)
+      end
+      distance_matrix.add_edge(distances)
+      distance_matrix
     end
 
     def outliers
@@ -46,16 +53,40 @@ module AgglomerativeClustering
     end
 
     def find_outliers percentage_of_clusters, distance
-      distance_matrix.each_with_index do |index, row, column|
+      distance_matrix.matrix.each_with_index do |index, row, column|
         count_hash[row] ||= 0
-        count_hash[row] += 1 if distance_matrix[row, column] > distance
-        set_outliers << points[row] if count_hash[row]/(distance_matrix.row_count - 1) > percentage_of_clusters/100
+        count_hash[row] += 1 if distance_matrix.matrix[row, column] > distance
+        set_outliers << points[row] if count_hash[row]/(distance_matrix.matrix.row_count - 1) > percentage_of_clusters/100
       end
       points.reject! { |point| outliers.include?(point) }
       outliers
     end
 
     private
+
+    def add_cluster new_cluster
+      clusters << new_cluster
+      update_distance_matrix(clusters.size - 1)
+      new_cluster
+    end
+
+    def remove_cluster index
+      clusters.delete_at(index)
+      distance_matrix.remove_edge(index)
+    end
+
+    def shortest_distance
+      min_cluster_dist = 1.0/0
+      indexes = []
+      distance_matrix.matrix.each_with_index do |index, row, column|
+        distance = distance_matrix.matrix[row, column]
+        if distance < min_cluster_dist && distance != 0
+          min_cluster_dist = distance
+          indexes = [row, column]
+        end
+      end
+      indexes
+    end
 
     def set_outliers
       @set_outliers ||= []
@@ -66,9 +97,10 @@ module AgglomerativeClustering
     end
 
     def build_distance_matrix
-      Matrix.build(points.size, points.size) do |row, column|
+      m = Matrix.build(points.size, points.size) do |row, column|
         euclidean_distance(points[row], points[column]).round(2)
       end
+      DistanceMatrix.new(m)
     end
 
   end

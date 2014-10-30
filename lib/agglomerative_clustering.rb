@@ -1,5 +1,6 @@
 require "agglomerative_clustering/version"
 require "agglomerative_clustering/euclidean_distance"
+require "agglomerative_clustering/distance_matrix"
 require "agglomerative_clustering/linkage/base"
 require "agglomerative_clustering/linkage/single"
 require "agglomerative_clustering/linkage/complete"
