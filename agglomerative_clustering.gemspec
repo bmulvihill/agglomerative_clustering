@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "agglomerative_clustering"
   spec.version       = AgglomerativeClustering::VERSION
   spec.authors       = ["Bryan Mulvihill"]
-  spec.email         = ["bmulvihill@pinsonault.com"]
+  spec.email         = ["mulvihill.bryan@gmail.com"]
   spec.summary       = %q{Ruby Agglomerative Clustering Algorithm}
   spec.homepage      = "https://github.com/bmulvihill/agglomerative_clustering"
   spec.license       = "MIT"
