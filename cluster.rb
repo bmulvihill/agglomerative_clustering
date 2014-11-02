@@ -56,3 +56,6 @@ clusters.each_with_index do |cluster, index|
     end
   end
 end
+ puts 'SC: '
+sc = SilhouetteCoefficient.new(clusters[0])
+puts sc.measure(cluster)
