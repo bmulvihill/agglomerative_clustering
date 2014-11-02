@@ -7,9 +7,7 @@ module AgglomerativeClustering
     end
 
     def matrix
-      Matrix.build(matrix_array.size, matrix_array.first.size) do |row, column|
-        matrix_array[row][column]
-      end
+      @matrix ||= build_matrix
     end
 
     def print_matrix
@@ -19,13 +17,12 @@ module AgglomerativeClustering
     def remove_edge index
       matrix_array.delete_at(index)
       matrix_array.each { |row| row.delete_at(index) }
-      Matrix.rows(matrix_array)
     end
 
     def add_edge weights
       matrix_array.each_with_index { |row, index|  row << weights[index] }
       matrix_array << weights
-      Matrix.rows(matrix_array)
+      @matrix = build_matrix
     end
 
     def shortest_distance
@@ -45,6 +42,12 @@ module AgglomerativeClustering
 
     def matrix_array
       @matrix_array ||= []
+    end
+
+    def build_matrix
+      Matrix.build(matrix_array.size, matrix_array.first.size) do |row, column|
+        matrix_array[row][column]
+      end
     end
 
   end
