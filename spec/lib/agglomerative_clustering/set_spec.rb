@@ -35,12 +35,6 @@ describe AgglomerativeClustering::Set do
     end
   end
 
-  context '#merge_clusters' do
-    it 'will merge two clusters into one and update the distance matrix' do
-      expect(@set.merge_clusters([0,1]).points).to eql([@point1, @point2])
-    end
-  end
-
   context '#find_outliers' do
     it 'will return a list of outliers' do
       outlier1 = FactoryGirl.build(:point, x:100, y:200, z:300)

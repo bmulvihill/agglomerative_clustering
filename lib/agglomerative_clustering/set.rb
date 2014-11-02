@@ -1,4 +1,3 @@
-require 'matrix'
 module AgglomerativeClustering
   class Set
     include EuclideanDistance
@@ -26,26 +25,9 @@ module AgglomerativeClustering
 
     def cluster total_clusters
       while clusters.size > total_clusters
-        merge_clusters(shortest_distance)
+        merge_clusters(distance_matrix.shortest_distance)
       end
       clusters
-    end
-
-    def merge_clusters indexes
-      index1, index2 = indexes
-      new_cluster = clusters[index1].merge(clusters[index2])
-      remove_cluster(index1)
-      remove_cluster(index2 - 1)
-      add_cluster(new_cluster)
-    end
-
-    def update_distance_matrix new_cluster
-      distances = []
-      clusters.each do |cluster|
-        distances << linkage.calculate_distance(clusters[new_cluster], cluster)
-      end
-      distance_matrix.add_edge(distances)
-      distance_matrix
     end
 
     def outliers
@@ -64,6 +46,23 @@ module AgglomerativeClustering
 
     private
 
+    def merge_clusters indexes
+      index1, index2 = indexes
+      new_cluster = clusters[index1].merge(clusters[index2])
+      remove_cluster(index1)
+      remove_cluster(index2 - 1)
+      add_cluster(new_cluster)
+    end
+
+    def update_distance_matrix new_cluster
+      distances = []
+      clusters.each do |cluster|
+        distances << linkage.calculate_distance(clusters[new_cluster], cluster)
+      end
+      distance_matrix.add_edge(distances)
+      distance_matrix
+    end
+
     def add_cluster new_cluster
       clusters << new_cluster
       update_distance_matrix(clusters.size - 1)
@@ -73,19 +72,6 @@ module AgglomerativeClustering
     def remove_cluster index
       clusters.delete_at(index)
       distance_matrix.remove_edge(index)
-    end
-
-    def shortest_distance
-      min_cluster_dist = 1.0/0
-      indexes = []
-      distance_matrix.matrix.each_with_index do |index, row, column|
-        distance = distance_matrix.matrix[row, column]
-        if distance < min_cluster_dist && distance != 0
-          min_cluster_dist = distance
-          indexes = [row, column]
-        end
-      end
-      indexes
     end
 
     def set_outliers

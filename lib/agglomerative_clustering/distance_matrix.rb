@@ -1,3 +1,4 @@
+require 'matrix'
 module AgglomerativeClustering
   class DistanceMatrix
 
@@ -26,7 +27,20 @@ module AgglomerativeClustering
       matrix_array << weights
       Matrix.rows(matrix_array)
     end
-    
+
+    def shortest_distance
+      min_dist = 1.0/0
+      indexes = []
+      matrix.each_with_index do |index, row, column|
+        distance = matrix[row, column]
+        if distance < min_dist && distance != 0
+          min_dist = distance
+          indexes = [row, column]
+        end
+      end
+      indexes
+    end
+
     private
 
     def matrix_array
