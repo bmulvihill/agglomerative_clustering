@@ -30,7 +30,7 @@ module AgglomerativeClustering
       indexes = []
       matrix.each_with_index do |index, row, column|
         distance = matrix[row, column]
-        if distance < min_dist && distance != 0
+        if distance < min_dist && (row != column)
           min_dist = distance
           indexes = [row, column]
         end

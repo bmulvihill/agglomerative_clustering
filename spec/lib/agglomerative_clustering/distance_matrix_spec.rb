@@ -5,7 +5,7 @@ describe AgglomerativeClustering::DistanceMatrix do
       matrix = AgglomerativeClustering::DistanceMatrix.new(Matrix.empty)
       matrix.add_edge([1,2])
       matrix.add_edge([2,2,3])
-      expect(matrix.remove_edge(0)).to eql(Matrix[[2,3]])
+      expect(matrix.remove_edge(0)).to eql([[2,3]])
     end
   end
 
@@ -18,8 +18,8 @@ describe AgglomerativeClustering::DistanceMatrix do
 
   context '#shortest_distance' do
     it 'will return the indexes of the shortest distances' do
-      matrix = AgglomerativeClustering::DistanceMatrix.new(Matrix.rows([[1,2,3]]))
-      expect(matrix.shortest_distance).to eql([0,0])
+      matrix = AgglomerativeClustering::DistanceMatrix.new(Matrix.rows([[0,2,3],[2,0,3]]))
+      expect(matrix.shortest_distance).to eql([0,1])
     end
   end
 end
