@@ -2,6 +2,8 @@ module AgglomerativeClustering
   module Linkage
     class Single < Base
 
+      # Determines the distance of two clusters
+      # Uses the minimum distance of all points
       def calculate_distance(cluster1, cluster2)
         min_point_distance = 1.0/0
         cluster1.points.each do |point1|
