@@ -1,62 +1,97 @@
 #!/usr/bin/env ruby
 require 'agglomerative_clustering'
 
-set = AgglomerativeClustering::Set.new(AgglomerativeClustering::Linkage::Single.new)
+single_set = AgglomerativeClustering::Set.new(AgglomerativeClustering::Linkage::Single.new)
+complete_set = AgglomerativeClustering::Set.new(AgglomerativeClustering::Linkage::Complete.new)
+a = 1
+b = 1
+c = 1
+radius = 25
+
 for i in 0..99
-  x = Random.rand(0..100)
-  y = Random.rand(0..100)
-  z = Random.rand(0..100)
-  p = Point.new(x,y,z)
-  set.push(p)
+ x = a + (Random.rand(-radius..radius))
+ y = a + (Random.rand(-radius..radius))
+ z = a + (Random.rand(-radius..radius))
+ p = Point.new(x,y,z)
+ single_set.push(p)
+ complete_set.push(p)
 end
-for i in 100..199
-  x = Random.rand(200..299)
-  y = Random.rand(200..299)
-  z = Random.rand(200..299)
-  p = Point.new(x,y,z)
-  set.push(p)
+
+a = 200
+b = 200
+c = 200
+radius = 25
+
+for i in 0..99
+ x = a + (Random.rand(-radius..radius))
+ y = a + (Random.rand(-radius..radius))
+ z = a + (Random.rand(-radius..radius))
+ p = Point.new(x,y,z)
+ single_set.push(p)
+ complete_set.push(p)
 end
-for i in 200..299
-  x = Random.rand(400..499)
-  y = Random.rand(400..499)
-  z = Random.rand(400..499)
-  p = Point.new(x,y,z)
-  set.push(p)
+
+a = 500
+b = 500
+c = 500
+radius = 25
+
+for i in 0..99
+ x = a + (Random.rand(-radius..radius))
+ y = a + (Random.rand(-radius..radius))
+ z = a + (Random.rand(-radius..radius))
+ p = Point.new(x,y,z)
+ single_set.push(p)
+ complete_set.push(p)
 end
 
 percentage = 80
 distance = 150
 
-open('points.csv', 'w') do |f|
-  set.points.each do |point|
-    f << "#{point.x},#{point.y},#{point.z}\n"
-  end
-end
+# open('points.csv', 'w') do |f|
+#   set.points.each do |point|
+#     f << "#{point.x},#{point.y},#{point.z}\n"
+#   end
+# end
+#
+# open('outliers.csv', 'w') do |f|
+#   set.find_outliers(percentage, distance).each do |point|
+#     f << "#{point.x},#{point.y},#{point.z}\n"
+#   end
+# end
+#
+# if set.outliers.any?
+#   puts 'Outliers Removed from Set:'
+#   set.outliers.each do |outlier|
+#     puts outlier
+#   end
+# else
+#   puts "There are no outliers where #{percentage}% of the points lie at a distance greater than #{distance}"
+# end
 
-open('outliers.csv', 'w') do |f|
-  set.find_outliers(percentage, distance).each do |point|
-    f << "#{point.x},#{point.y},#{point.z}\n"
-  end
-end
+ clusters1 = single_set.cluster(2)
+ clusters2 = complete_set.cluster(2)
 
-if set.outliers.any?
-  puts 'Outliers Removed from Set:'
-  set.outliers.each do |outlier|
-    puts outlier
-  end
-else
-  puts "There are no outliers where #{percentage}% of the points lie at a distance greater than #{distance}"
-end
-
-clusters = set.cluster(3)
-clusters.each_with_index do |cluster, index|
-  open("cluster#{index}.csv", 'w') do |f|
-    cluster.points.each do |point|
+clusters1.each_with_index do |cluster, index|
+  open("cluster1#{index}.csv", 'w') do |f|
+    cluster.points.sort_by{|p| [p.x, p.y, p.z] }.each do |point|
       f << "#{point.x},#{point.y},#{point.z}\n"
     end
   end
 end
 
-puts 'Silhouette Coefficient of First Cluster: '
-sc = AgglomerativeClustering::SilhouetteCoefficient.new(clusters[0])
-puts sc.measure(clusters)
+clusters2.each_with_index do |cluster, index|
+  open("cluster2#{index}.csv", 'w') do |f|
+    cluster.points.sort_by{|p| [p.x, p.y, p.z] }.each do |point|
+      f << "#{point.x},#{point.y},#{point.z}\n"
+    end
+  end
+end
+puts clusters1.map(&:points) & clusters2.map(&:points)
+puts 'First Set: '
+sc1 = AgglomerativeClustering::SilhouetteCoefficient.new(clusters1[0])
+puts sc1.measure(clusters1)
+
+puts 'Second Set: '
+sc4 = AgglomerativeClustering::SilhouetteCoefficient.new(clusters2[0])
+puts sc4.measure(clusters2)
