@@ -21,7 +21,7 @@ module AgglomerativeClustering
             end
             average_distances << distances.inject(:+)/distances.size
           end
-          b1 = average_distances.min
+          b1 = average_distances.min || 0
           s1 = (b1 - a1)/[a1,b1].max
           silhouettes << s1
         end
@@ -34,6 +34,7 @@ module AgglomerativeClustering
       main_cluster.points.each do |point1|
         distances << euclidean_distance(point, point1).round(2)
       end
+      return 0 if distances.size == 1
       (distances.inject(:+)/(distances.size - 1)).round(2)
     end
 

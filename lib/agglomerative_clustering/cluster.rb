@@ -10,6 +10,8 @@ module AgglomerativeClustering
     # Returns all the points in the cluster
     def points
       @points ||= []
+      @points.sort_by!{|p| [p.x, p.y, p.z] } if @points.any?
+      @points
     end
 
     # Merges the points of two clusters

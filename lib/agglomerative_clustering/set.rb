@@ -3,11 +3,10 @@ module AgglomerativeClustering
     include EuclideanDistance
     attr_reader :linkage
 
-    # Uses dependency injection to determine linkage algorithm
     def initialize(linkage)
       @linkage = linkage
     end
-
+    
     # All points in the set
     def points
       @points ||= []

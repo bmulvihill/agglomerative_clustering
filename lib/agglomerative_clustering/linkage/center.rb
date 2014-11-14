@@ -11,7 +11,8 @@ module AgglomerativeClustering
 
       # Finds a the center of a cluster
       def center_point cluster
-        cluster.points.first.zip(*cluster.points[1..cluster.points.size-1]).map { |a,b| (a + b)/cluster.points.size.to_f }
+        return cluster.points.first if cluster.points.size == 1
+        cluster.points.first.zip(*cluster.points[1..cluster.points.size-1]).map { |a| a.inject(:+).to_f/a.size.to_f }
       end
 
     end

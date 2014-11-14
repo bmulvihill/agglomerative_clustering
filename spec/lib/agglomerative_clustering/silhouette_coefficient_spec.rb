@@ -18,7 +18,7 @@ describe AgglomerativeClustering::SilhouetteCoefficient do
       cluster4.merge(cluster5).merge(cluster6)
       sc = AgglomerativeClustering::SilhouetteCoefficient.new(cluster1)
       clusters = [cluster1, cluster4]
-      expect(sc.measure(clusters).round(4)).to eql(-0.0893)
+      expect(sc.measure(clusters)).to eql(-0.09)
     end
   end
 end

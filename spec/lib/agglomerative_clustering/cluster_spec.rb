@@ -5,7 +5,7 @@ describe AgglomerativeClustering::Cluster do
       cluster1 = FactoryGirl.build(:cluster)
       cluster2 = FactoryGirl.build(:cluster)
       points = cluster1.points + cluster2.points
-      expect(cluster1.merge(cluster2).points).to eql(points)
+      expect(cluster1.merge(cluster2).points).to eql(points.sort_by{[:x,:y,:z]})
     end
   end
 end
