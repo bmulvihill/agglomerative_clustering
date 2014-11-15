@@ -6,7 +6,7 @@ module AgglomerativeClustering
     def initialize(linkage)
       @linkage = linkage
     end
-    
+
     # All points in the set
     def points
       @points ||= []
@@ -42,13 +42,17 @@ module AgglomerativeClustering
 
     # Finds any outliers based on percentage of points at a given distance
     # Removes clusters from the Set
+    # Rebuilds the distance matrix
     def find_outliers percentage_of_clusters, distance
       distance_matrix.matrix.each_with_index do |index, row, column|
         count_hash[row] ||= 0
         count_hash[row] += 1 if distance_matrix.matrix[row, column] > distance
-        set_outliers << points[row] if count_hash[row]/(distance_matrix.matrix.row_count - 1) > percentage_of_clusters/100
+        if count_hash[row]/(distance_matrix.matrix.row_count - 1) > percentage_of_clusters/100
+          set_outliers << points[row]
+        end
       end
       points.reject! { |point| outliers.include?(point) }
+      @distance_matrix = build_distance_matrix
       outliers
     end
 
